@@ -1,0 +1,1 @@
+{"rsync":{"/home/vagrant/sync":{"type":"rsync","guestpath":"/home/vagrant/sync","hostpath":"/home/sysad/MyFiles/Gravitational/git-repos/gravitational-vagrant/vagrant-fedora26-atomic-host","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}

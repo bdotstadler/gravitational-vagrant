@@ -1,0 +1,41 @@
+# Aug 26 2017
+
+# Run the following to quickly bring up a fedora 26 atomic host image.
+# This image under consideration for running Kubernetes.
+
+# Create a default config for fedora 26 atomic host.  Config can be modded later.
+vagrant init fedora/26-atomic-host
+
+# Bring up the instace defined in the vagrant file.
+vagrant up 
+
+# destroy the instance
+vagrant destroy
+
+# Attempt to store this box for later use failed.  Unknown why.  Investigate later
+# It does appear the image file is not downloaded again after the destroy process is complete.
+vagrant box add fedora/26-atmoic-host
+
+The box 'fedora/26-atmoic-host' could not be found or
+could not be accessed in the remote catalog. If this is a private
+box on HashiCorp's Atlas, please verify you're logged in via
+`vagrant login`. Also, please double-check the name. The expanded
+URL and error message are shown below:
+
+URL: ["https://atlas.hashicorp.com/fedora/26-atmoic-host"]
+Error: The requested URL returned error: 404 Not Found
+
+# Images for libvirt are stored here locally for fedora 26 workstation
+/var/lib/libvirt/images/
+
+# Vagrant images are not destroyed with the destroy command.  Use the following command to remove images.
+vagrant box remove
+
+# Networking.  By default it appears libvirt is assigning networking resources using an internal schema
+# on the localhost and NOT my networks DHCP service.  From the VM I can access external network resources.
+# Some internal VM NATing must be occuring.  Will want to change this so VMs are fully accessible via network.
+
+# Access to local VM can be done using the vagrant SSH command.  Will explore later how this works with multiple VMs.
+vagrant ssh
+
+
