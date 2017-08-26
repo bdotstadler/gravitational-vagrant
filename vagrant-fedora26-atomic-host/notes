@@ -1,5 +1,6 @@
 # Aug 26 2017
 
+#####QUICK BRING UP#####
 # Run the following to quickly bring up a fedora 26 atomic host image.
 # This image under consideration for running Kubernetes.
 
@@ -12,30 +13,45 @@ vagrant up
 # destroy the instance
 vagrant destroy
 
+
+#####IMAGES#####
 # Attempt to store this box for later use failed.  Unknown why.  Investigate later
 # It does appear the image file is not downloaded again after the destroy process is complete.
-vagrant box add fedora/26-atmoic-host
-
-The box 'fedora/26-atmoic-host' could not be found or
-could not be accessed in the remote catalog. If this is a private
-box on HashiCorp's Atlas, please verify you're logged in via
-`vagrant login`. Also, please double-check the name. The expanded
-URL and error message are shown below:
-
-URL: ["https://atlas.hashicorp.com/fedora/26-atmoic-host"]
-Error: The requested URL returned error: 404 Not Found
+  vagrant box add fedora/26-atmoic-host
 
 # Images for libvirt are stored here locally for fedora 26 workstation
-/var/lib/libvirt/images/
+  /var/lib/libvirt/images/
 
 # Vagrant images are not destroyed with the destroy command.  Use the following command to remove images.
-vagrant box remove
+  vagrant box remove
 
-# Networking.  By default it appears libvirt is assigning networking resources using an internal schema
+
+#####NETWORKING#####
+# By default it appears libvirt is assigning networking resources using an internal schema
 # on the localhost and NOT my networks DHCP service.  From the VM I can access external network resources.
 # Some internal VM NATing must be occuring.  Will want to change this so VMs are fully accessible via network.
+#
+# OK yes, there are different networking schemes vagrant can use, default, private - appears to be default - and public.
+#
+# Caveat,boxes are not secure by default since vagrant has certain expectations for access to these devices.  Careful
+# when using public networking.  See section security.
 
+# SSH:
 # Access to local VM can be done using the vagrant SSH command.  Will explore later how this works with multiple VMs.
-vagrant ssh
+  vagrant ssh
+
+#####SECURITY#####
+# Warning:  Vagrant images are very insecure by default.  Use care when exposing to the network. Else spin own image.
+# Default root password is 'vagrant'.
+# Default vagrant password is 'vagrant'.
+# Vagrant user also accepts key based SSH authentication.  This allows for the vagrant ssh command to function.  This
+# is a default key across ALL images supported by vagrant.
+# Passwordless sudo.
+
+
+#####FOLDER SYNC#####
+# By default one folder is synced.  This is the default project folder with /home/vagrant/sync.  It appears current
+# Vagrant documentation is incorrect.
+
 
 
