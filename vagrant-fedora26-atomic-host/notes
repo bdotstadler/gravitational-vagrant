@@ -14,6 +14,30 @@ vagrant up
 vagrant destroy
 
 
+#####COMMANDS#####
+# These notes are based on version 1.9.1 that is delivered with Fedora 26.  Not all commands listed
+# in the Vagrant documentation available on the vagrant site are available with this version.  One
+# notable example is the share command.
+
+#####LOAD ORDER & MERGING#####
+# Vagrant loads multiple vagrant files at run time and merges them to form a complete command set.
+# 1) Your projects Vagrantfile
+# 2) The Vagrantfile delivered in the box. Example, the fedora box image I am using delivered its
+#    own Vagrantfile and that file specified the libvirt provider.  Unknown how it knew to use
+#    libvirt.  I did not specify the libvirt image.  Possibly choosing based on what provider Vagrant
+#    sees as installed.
+# 3) The system wide Vagrantfile defined under the current user.  ~/.vagrant.d
+#
+# Under ~/.vagrant.d we see where the libvirt provider is defined.  Unknown what happens if I also
+# install VirtualBox on the system. Later.
+#
+# Depending in the load order most settings are overridden.  However, networking for example, is
+# appended.  This would explain the multiple networks I am seeing.
+#
+# Multiple Vagrant.configure blocks are allowed in a single file.
+#
+
+
 #####IMAGES#####
 # Attempt to store this box for later use failed.  Unknown why.  Investigate later
 # It does appear the image file is not downloaded again after the destroy process is complete.
@@ -53,5 +77,14 @@ vagrant destroy
 # By default one folder is synced.  This is the default project folder with /home/vagrant/sync.  It appears current
 # Vagrant documentation is incorrect.
 
+
+#####CONFIG.VM#####
+# config.vm.providor defines the VM providor, libvirt, virtualbox, and etc.
+
+
+#####BOX UPDATES#####
+# Vagrant will provide a message if there is a box update.  One must first destroy the current running instance and
+# run 'vagrant box update' to aquire the new version.  Vagrant will not automatically remove older box versions.  Use
+# 'vagrant box list' and 'vagrant box prune' to accomplish this.
 
 
