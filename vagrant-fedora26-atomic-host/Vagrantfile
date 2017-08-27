@@ -1,15 +1,46 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
+# Vagrantfile to bring up three instances of an OS to support a small
+# Kubernets cluster.
+# NOTE:  Do not redefine your VMs while they are running and expect
+# Vagrant to be able to destroy them.  Vagrant will lose track of them.
+
 Vagrant.configure("2") do |config|
+
+# I will define first a single box and then further define it into three
+# identical boxes to support the three node setup.
+
+
+
+  # Create three boxes.
+  # First manaually define all three.
+#    config.vm.define "atomic1" do |atomic1|
+#      atomic1.vm.box = "fedora/26-atomic-host"
+#    end
+
+#    config.vm.define "atomic2" do |atomic2|
+#      atomic2.vm.box = "fedora/26-atomic-host"
+#    end
+
+#    config.vm.define "atomic3" do |atomic3|
+#      atomic3.vm.box = "fedora/26-atomic-host"
+#    end
+
+
+  # Second generate all three using a Ruby 'each' clause. 'for' is strange
+  # in Ruby.
+  # NOTE: In Ruby it appears the '#' sign before a variable{} is used to 
+  # define its type.  Meaning, the '#' will not be part of the string name.
+    (1..3).each do |i|
+      config.vm.define "atomic-#{i}" do |node|
+        node.vm.box = "fedora/26-atomic-host"
+      end
+    end
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "fedora/26-atomic-host"
+  #config.vm.box = "fedora/26-atomic-host"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -34,13 +65,13 @@ Vagrant.configure("2") do |config|
   # HOWEVER, now the VM has two interfaces and is pulling a default
   # NATed IP address and a public network IP address.  Also, two
   # default routes!  Great.
-    config.vm.network "public_network", bridge: "eno1", dev: "eno1"
+  #  config.vm.network "public_network", bridge: "eno1", dev: "eno1"
 
   # Set hostname
-    config.vm.hostname = "atomic1"
+  #  config.vm.hostname = "atomic1"
 
   # Set post up message
-    config.vm.post_up_message = "atomic1 is up"
+  #  config.vm.post_up_message = "atomic1 is up"
 
 
   # Share an additional folder to the guest VM. The first argument is

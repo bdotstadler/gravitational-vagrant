@@ -25,8 +25,13 @@ vagrant destroy
 # 2) The Vagrantfile delivered in the box. Example, the fedora box image I am using delivered its
 #    own Vagrantfile and that file specified the libvirt provider.  Unknown how it knew to use
 #    libvirt.  I did not specify the libvirt image.  Possibly choosing based on what provider Vagrant
-#    sees as installed.
-# 3) The system wide Vagrantfile defined under the current user.  ~/.vagrant.d
+#    sees as installed.  UPDATE:  Vagrant exchanges metadata with hashicorp during the provision
+#    process.  Since the only providor I have installed is libvirt then Vagrant chose the libvirt
+#    box option.  If the box did not support libvirt then it would have failed to provision.
+#    UPDATE: Vagrant will remain as portable as possible.  If one does specify a provider it will
+#    use that provider.  However, if that provider is not available Vagrant will automatically use
+#    the next available provider.
+# 3) The user wide Vagrantfile defined under the current user.  ~/.vagrant.d
 #
 # Under ~/.vagrant.d we see where the libvirt provider is defined.  Unknown what happens if I also
 # install VirtualBox on the system. Later.
