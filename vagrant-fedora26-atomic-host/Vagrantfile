@@ -103,7 +103,7 @@ Vagrant.configure("2") do |config|
         node.vm.box = "fedora/26-atomic-host"
         node.vm.hostname = "atomic#{i}"
         node.vm.network "public_network", bridge: "eno1", dev: "eno1"
-        #Vagrant/Ruby does like how I've declated the host port.
+        #Vagrant/Ruby doesn't like how I've declared the host port.
         #node.vm.network "forwarded_port", guest: 22, host: "222#{i}"
 	node.vm.post_up_message = "atomic#{i} is up."
 	node.vm.provision "shell", run: "always",
