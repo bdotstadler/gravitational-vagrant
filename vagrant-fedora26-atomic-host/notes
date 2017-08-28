@@ -19,6 +19,10 @@ vagrant destroy
 # in the Vagrant documentation available on the vagrant site are available with this version.  One
 # notable example is the share command.
 
+#####VAGRANTFILE#####
+# Note, load order of config is "outside-in, in the order in the file".  This means nested elements
+# will execute later.  This allows nested items to override more globally defined items.
+
 #####LOAD ORDER & MERGING#####
 # Vagrant loads multiple vagrant files at run time and merges them to form a complete command set.
 # 1) Your projects Vagrantfile
@@ -66,8 +70,35 @@ vagrant destroy
 # when using public networking.  See section security.
 
 # SSH:
-# Access to local VM can be done using the vagrant SSH command.  Will explore later how this works with multiple VMs.
-  vagrant ssh
+# Access to local VM can be done using the vagrant SSH command. With multiple guests simple supply the desired 
+# guest name 
+  vagrant ssh <guest name>
+
+###PUBLIC NETWORK###
+# With the public_network definition one cant access the guest directly from the host.  One can access the guest
+# from a non-host device.  There is either some logic in the fedora 26 host/vagrant or more likely the host
+# firewall with local access.
+  
+###ROUTING###
+# Notice the difference in the quoting and how this affects escaping on the variables.
+
+# This is the original from a Vagrant example.  They are escaping the variables.  This could work
+# since Vagrant will pass this entire string in "" to the shell. 
+# Note, the below tests.  This Vagrant example may be correct since the entire string is passed to the 
+# shell in "".
+  "eval `route -n | awk '{ if ($8 ==\"eth0\" && $2 != \"0.0.0.0\") print \"route del default gw \" $2; }'`"
+
+# Here we single quote the entire string to eval and double guoqte the entire awk string.  Note,
+# we also had to escape the awk variables in the if statement.
+  eval 'route -n | awk "{ if (\$8 ==\"eth0\" && \$2 != \"0.0.0.0\") print \$2; }"'
+  192.168.121.1
+
+# Here we take the same string provided in the Vagrant example and remove the escaping on the
+# "" in the awk if statement
+  eval `route -n | awk '{ if ($8 =="eth0" && $2 != "0.0.0.0") print $2; }'`
+  bash: 192.168.121.1: command not found
+
+
 
 #####SECURITY#####
 # Warning:  Vagrant images are very insecure by default.  Use care when exposing to the network. Else spin own image.
@@ -93,3 +124,7 @@ vagrant destroy
 # 'vagrant box list' and 'vagrant box prune' to accomplish this.
 
 
+#####SYNCED FOLDERS#####
+# It appears editing data withing the synced folder on the guest does NOT carry backwards to the host.
+# UPDATE: This is because the Vagrantfile delivered with the image defined this and is using a one
+# time rsync during bring up.
